@@ -1,0 +1,8 @@
+standard = "2008"
+
+[libraries]
+lib.files = ["src/*.vhdl"]
+
+[lint]
+unused = "error"
+unnecessary_work_library = false
