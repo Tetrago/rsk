@@ -17,9 +17,9 @@ architecture behave of alu_tb is
 
 begin
 
-  alu_0 : alu
+  alu_0 : component alu
     generic map (
-      width => 4
+      width_g => 4
     )
     port map (
       x_i      => r_x,
@@ -30,43 +30,140 @@ begin
       c_o      => s_c
     );
 
-  process
-    type pattern is record
-        x, y, result : std_logic_vector(3 downto 0);
-        op : alu_op;
-        c_i, c_o : std_logic;
-    end record pattern;
+  tb : process is
 
-    type pattern_array is array (natural range <>) of pattern;
+    type t_pattern is record
+      x, y, result : std_logic_vector(3 downto 0);
+      op           : alu_op;
+      c_i, c_o     : std_logic;
+    end record t_pattern;
 
-    constant patterns : pattern_array := (
-      ("0001", "0001", "0010", alu_add, '0', '0'),
-      ("1000", "1000", "0000", alu_add, '0', '1'),
-      ("1010", "1100", "1000", alu_and, '0', '0'),
-      ("1010", "1100", "1110", alu_or,  '0', '0'),
-      ("1010", "XXXX", "0100", alu_rol, '0', '1'),
-      ("1010", "XXXX", "0101", alu_rol, '1', '1'),
-      ("0101", "XXXX", "0010", alu_ror, '0', '1'),
-      ("0101", "XXXX", "1010", alu_ror, '1', '1'),
-      ("0101", "XXXX", "0010", alu_asr, '0', '1'),
-      ("1101", "XXXX", "1110", alu_asr, '0', '1'),
-      ("1010", "XXXX", "0100", alu_lsl, '1', '1'),
-      ("0101", "XXXX", "0010", alu_lsr, '1', '1')
+    type t_patterns is array (natural range <>) of t_pattern;
+
+    constant patterns : t_patterns :=
+    (
+      (
+        "0001",
+        "0001",
+        "0010",
+        alu_add,
+        '0',
+        '0'
+      ),
+      (
+        "1000",
+        "1000",
+        "0000",
+        alu_add,
+        '0',
+        '1'
+      ),
+      (
+        "1010",
+        "1100",
+        "1000",
+        alu_and,
+        '0',
+        '0'
+      ),
+      (
+        "1010",
+        "1100",
+        "1110",
+        alu_or,
+        '0',
+        '0'
+      ),
+      (
+        "1010",
+        "XXXX",
+        "0100",
+        alu_rol,
+        '0',
+        '1'
+      ),
+      (
+        "1010",
+        "XXXX",
+        "0101",
+        alu_rol,
+        '1',
+        '1'
+      ),
+      (
+        "0101",
+        "XXXX",
+        "0010",
+        alu_ror,
+        '0',
+        '1'
+      ),
+      (
+        "0101",
+        "XXXX",
+        "1010",
+        alu_ror,
+        '1',
+        '1'
+      ),
+      (
+        "0101",
+        "XXXX",
+        "0010",
+        alu_asr,
+        '0',
+        '1'
+      ),
+      (
+        "1101",
+        "XXXX",
+        "1110",
+        alu_asr,
+        '0',
+        '1'
+      ),
+      (
+        "1010",
+        "XXXX",
+        "0100",
+        alu_lsl,
+        '1',
+        '1'
+      ),
+      (
+        "0101",
+        "XXXX",
+        "0010",
+        alu_lsr,
+        '1',
+        '1'
+      )
     );
+
   begin
+
     for i in patterns'range loop
-      r_x <= patterns(i).x;
-      r_y <= patterns(i).y;
+
+      r_x  <= patterns(i).x;
+      r_y  <= patterns(i).y;
       r_op <= patterns(i).op;
-      r_c <= patterns(i).c_i;
+      r_c  <= patterns(i).c_i;
       wait for 1 ns;
 
-      assert s_result = patterns(i).result report "bad result" severity error;
-      assert s_c = patterns(i).c_o report "bad carry" severity error;
+      assert s_result = patterns(i).result
+        report "bad result"
+        severity error;
+      assert s_c = patterns(i).c_o
+        report "bad carry"
+        severity error;
+
     end loop;
 
-    assert false report "end of test" severity note;
+    assert false
+      report "end of test"
+      severity note;
     wait;
-  end process;
+
+  end process tb;
 
 end architecture behave;

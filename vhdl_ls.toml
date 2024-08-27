@@ -1,7 +1,7 @@
 standard = "2008"
 
 [libraries]
-lib.files = ["src/*.vhdl"]
+lib.files = ["src/*.vhdl", "test/*.vhdl"]
 
 [lint]
 unused = "error"

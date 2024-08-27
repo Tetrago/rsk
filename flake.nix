@@ -11,7 +11,7 @@
         devShells.default = pkgs.mkShell {
           name = "rsk";
 
-          packages = with pkgs; [ ghdl ];
+          packages = with pkgs; [ ghdl gtkwave ];
         };
       });
 }

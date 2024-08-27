@@ -16,14 +16,14 @@ package alu_pkg is
 
   component alu is
     generic (
-      width : natural := 32
+      width_g : natural := 32
     );
     port (
-      x_i      : in    std_logic_vector(width - 1 downto 0);
-      y_i      : in    std_logic_vector(width - 1 downto 0);
+      x_i      : in    std_logic_vector(width_g - 1 downto 0);
+      y_i      : in    std_logic_vector(width_g - 1 downto 0);
       c_i      : in    std_logic;
       op_i     : in    alu_op;
-      result_o : out   std_logic_vector(width - 1 downto 0);
+      result_o : out   std_logic_vector(width_g - 1 downto 0);
       c_o      : out   std_logic
     );
   end component alu;
